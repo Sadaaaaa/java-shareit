@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exception.IncorrectEmailException;
+import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.dto.UserMapper;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.ArrayList;
@@ -18,19 +20,23 @@ public class UserStorageInMemory implements UserStorage {
     Map<Integer, User> users = new HashMap<>();
     int id = 0;
 
-    public List<User> getAllUsers() {
-        return new ArrayList<>(users.values());
+    public List<UserDto> getAllUsers() {
+        List<UserDto> usersDto = new ArrayList<>();
+        for (User x : users.values()) {
+            usersDto.add(UserMapper.toUserDto(x));
+        }
+        return usersDto;
     }
 
     @Override
-    public User addUser(User user) {
+    public UserDto addUser(User user) {
         if (!isValid(user)) throw new IncorrectEmailException("Incorrect user email");
 
         id++;
         user.setId(id);
-
         users.put(id, user);
-        return user;
+
+        return UserMapper.toUserDto(user);
     }
 
     @Override
