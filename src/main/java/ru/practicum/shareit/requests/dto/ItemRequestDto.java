@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
  * // TODO .
  */
 public class ItemRequestDto {
-    String description;
-    User requestor;
-    LocalDateTime created;
+    private String description;
+    private User requestor;
+    private LocalDateTime created;
 
     public ItemRequestDto(String description, User requestor, LocalDateTime created) {
         this.description = description;

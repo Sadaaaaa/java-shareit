@@ -7,11 +7,11 @@ import lombok.Data;
  */
 @Data
 public class ItemDto {
-    int id;
-    String name;
-    String description;
-    boolean available;
-    Integer integer;
+    private int id;
+    private String name;
+    private String description;
+    private boolean available;
+    private Integer integer;
 
     public ItemDto(int id, String name, String description, boolean available, Integer integer) {
         this.id = id;

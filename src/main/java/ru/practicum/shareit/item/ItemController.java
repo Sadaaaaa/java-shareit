@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/items")
 public class ItemController {
-    ItemServiceImpl itemService;
+    private ItemServiceImpl itemService;
 
     @Autowired
     public ItemController(ItemServiceImpl itemService) {

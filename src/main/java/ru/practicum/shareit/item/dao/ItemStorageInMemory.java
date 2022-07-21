@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import ru.practicum.shareit.exception.IncorrectItemOwnerException;
+
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
@@ -19,9 +20,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Repository
 public class ItemStorageInMemory implements ItemStorage {
-    Map<Integer, Item> items = new HashMap<>();
-    UserStorage userStorage;
-    int i = 0;
+    private Map<Integer, Item> items = new HashMap<>();
+    private UserStorage userStorage;
+    private int i = 0;
 
     @Autowired
     public ItemStorageInMemory(UserStorage userStorage) {
@@ -43,46 +44,38 @@ public class ItemStorageInMemory implements ItemStorage {
             throw new IncorrectItemOwnerException("Wrong item updated owner");
         }
 
-        Item updItem = items.values()
-                .stream()
-                .filter(i -> i.getId() == itemId)
-                .findAny()
-                .orElseThrow();
+        Item updItem = items.get(itemId);
 
         updItem.setId(itemId);
         if (item.getName() != null) updItem.setName(item.getName());
         if (item.getDescription() != null) updItem.setDescription(item.getDescription());
         if (item.getAvailable() != null)  updItem.setAvailable(item.getAvailable());
         updItem.setOwner(userStorage.getUser(userId));
-//        updItem.setRequest();
+//        updItem.setRequest(); <- заготовка для будущего спринта
 
-        for(Item x : items.values()) {
-            if (x.getId() == itemId) {
-                items.remove(itemId);
-                items.put(itemId, updItem);
-            }
-        }
+        items.remove(itemId);
+        items.put(itemId, updItem);
 
         return ItemMapper.toItemDto(updItem);
     }
 
     @Override
     public ItemDto getItem(int itemId) {
-        Item item = items.values()
-                .stream()
-                .filter(i -> i.getId() == itemId)
-                .findAny()
-                .get();
-        return ItemMapper.toItemDto(item);
+        return ItemMapper.toItemDto(items.get(itemId));
     }
 
     @Override
     public List<ItemDto> getItemsByUser(int userId) {
         List<ItemDto> itemsDtoByUser = new ArrayList<>();
-        List<Item> filteredByUser = items.values().stream().filter(u -> u.getOwner().getId() == userId).collect(Collectors.toList());
+
+        List<Item> filteredByUser = items.values().stream()
+                .filter(u -> u.getOwner().getId() == userId)
+                .collect(Collectors.toList());
+
         for(Item x : filteredByUser) {
             itemsDtoByUser.add(ItemMapper.toItemDto(x));
         }
+
         return itemsDtoByUser;
     }
 
@@ -98,6 +91,7 @@ public class ItemStorageInMemory implements ItemStorage {
                 .filter(i -> i.getDescription().toLowerCase().contains(text.toLowerCase()))
                 .filter(Item::getAvailable)
                 .collect(Collectors.toList());
+
         for(Item x : filteredByName) {
             itemsDtoByName.add(ItemMapper.toItemDto(x));
         }

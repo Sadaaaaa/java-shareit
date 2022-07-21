@@ -17,8 +17,8 @@ import java.util.Map;
 @Slf4j
 @Repository
 public class UserStorageInMemory implements UserStorage {
-    Map<Integer, User> users = new HashMap<>();
-    int id = 0;
+    private Map<Integer, User> users = new HashMap<>();
+    private int id = 0;
 
     public List<UserDto> getAllUsers() {
         List<UserDto> usersDto = new ArrayList<>();

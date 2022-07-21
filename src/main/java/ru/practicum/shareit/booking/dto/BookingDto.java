@@ -13,11 +13,11 @@ import java.time.LocalDate;
 
 @Data
 public class BookingDto {
-    LocalDate start;
-    LocalDate end;
-    Item item;
-    User booker;
-    BookingStatus status;
+    private LocalDate start;
+    private LocalDate end;
+    private Item item;
+    private User booker;
+    private BookingStatus status;
 
     public BookingDto(LocalDate start, LocalDate end, Item item, User booker, BookingStatus status) {
         this.start = start;
