@@ -4,8 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import ru.practicum.shareit.exception.IncorrectItemOwnerException;
-
+import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
@@ -20,8 +19,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @Repository
 public class ItemStorageInMemory implements ItemStorage {
-    private Map<Integer, Item> items = new HashMap<>();
-    private UserStorage userStorage;
+    private final Map<Integer, Item> items = new HashMap<>();
+    private final UserStorage userStorage;
     private int i = 0;
 
     @Autowired
@@ -41,7 +40,7 @@ public class ItemStorageInMemory implements ItemStorage {
     public ItemDto updateItem(int userId, int itemId, Item item) {
         if ((items.get(itemId).getOwner() != null) && (items.get(itemId).getOwner().getId() != userId)) {
             log.warn("Incorrect owner: Wrong item updated owner");
-            throw new IncorrectItemOwnerException("Wrong item updated owner");
+            throw new NotFoundException("Wrong item updated owner");
         }
 
         Item updItem = items.get(itemId);

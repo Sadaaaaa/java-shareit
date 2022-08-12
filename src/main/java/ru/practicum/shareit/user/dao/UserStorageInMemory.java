@@ -3,7 +3,7 @@ package ru.practicum.shareit.user.dao;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import ru.practicum.shareit.exception.IncorrectEmailException;
+import ru.practicum.shareit.exception.ConflictException;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserMapper;
@@ -17,7 +17,7 @@ import java.util.Map;
 @Slf4j
 @Repository
 public class UserStorageInMemory implements UserStorage {
-    private Map<Integer, User> users = new HashMap<>();
+    private final Map<Integer, User> users = new HashMap<>();
     private int id = 0;
 
     public List<UserDto> getAllUsers() {
@@ -30,7 +30,7 @@ public class UserStorageInMemory implements UserStorage {
 
     @Override
     public UserDto addUser(User user) {
-        if (!isValid(user)) throw new IncorrectEmailException("Incorrect user email");
+        if (!isValid(user)) throw new ConflictException("Incorrect user email");
 
         id++;
         user.setId(id);
@@ -46,7 +46,7 @@ public class UserStorageInMemory implements UserStorage {
 
     @Override
     public User updateUser(int userId, User user) {
-        if (!isValid(user)) throw new IncorrectEmailException("Incorrect user email");
+        if (!isValid(user)) throw new ConflictException("Incorrect user email");
 
         User updateUser = users.get(userId);
         if (user.getName() != null) updateUser.setName(user.getName());
@@ -71,6 +71,5 @@ public class UserStorageInMemory implements UserStorage {
         }
 
         return isValid;
-
     }
 }

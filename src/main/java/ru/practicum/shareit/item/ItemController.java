@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/items")
 public class ItemController {
-    private ItemServiceImpl itemService;
+    private final ItemServiceImpl itemService;
 
     @Autowired
     public ItemController(ItemServiceImpl itemService) {

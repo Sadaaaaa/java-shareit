@@ -1,7 +1,4 @@
 package ru.practicum.shareit.requests.dto;
-
-import ru.practicum.shareit.user.model.User;
-
 import java.time.LocalDateTime;
 
 /**

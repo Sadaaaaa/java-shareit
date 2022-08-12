@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {
-    private UserServiceImpl userService;
+    private final UserServiceImpl userService;
 
     @Autowired
     public UserController(UserServiceImpl userService) {
@@ -26,7 +26,6 @@ public class UserController {
     public ResponseEntity<?> createUser(@Valid @RequestBody User user){
         return ResponseEntity.ok(userService.createUser(user));
     }
-
 
     @GetMapping
     public List<UserDto> getAllUsers() {

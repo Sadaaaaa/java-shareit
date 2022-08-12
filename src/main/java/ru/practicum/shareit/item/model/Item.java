@@ -1,8 +1,6 @@
 package ru.practicum.shareit.item.model;
 
 import lombok.Data;
-import ru.practicum.shareit.booking.Booking;
-import ru.practicum.shareit.requests.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
@@ -29,8 +27,4 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "user_id")
     private User owner;
-
-//    @OneToMany(mappedBy = "requests_id")
-//    @JoinColumn(name = "request_id", referencedColumnName = "requests_id")
-//    private ItemRequest request;
 }

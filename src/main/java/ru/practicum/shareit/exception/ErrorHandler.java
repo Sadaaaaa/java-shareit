@@ -9,22 +9,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ErrorHandler {
 
     @ExceptionHandler
-    public ResponseEntity<?> handle(final IncorrectEmailException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+    public ResponseEntity<?> handle(final NotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
-    public ResponseEntity<?> handle(final IncorrectItemRequestException e) {
+    public ResponseEntity<?> handle(final BadRequestException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
-    public ResponseEntity<?> handle(final IncorrectItemOwnerException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<?> handle(final ItemNotFoundException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> handle(final ConflictException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
 }
