@@ -1,9 +1,10 @@
-package ru.practicum.shareit.user;
+package ru.practicum.shareit.user.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.user.dao.UserRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserMapper;
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<UserDto> getAllUsers() {
-       List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAll();
         return users.stream().map(UserMapper::toUserDto).collect(Collectors.toList());
     }
 }

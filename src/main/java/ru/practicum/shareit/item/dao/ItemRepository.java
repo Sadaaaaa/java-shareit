@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item;
+package ru.practicum.shareit.item.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
 
-    List<Item> findAllByOwnerId(int user_id);
+    List<Item> findAllByOwnerId(int userId);
 
     @Query(" select i from Item i " +
             "where lower(i.name) like lower(concat('%', :search, '%')) " +

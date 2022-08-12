@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingDtoRequest;
+import ru.practicum.shareit.booking.service.BookingService;
 
 import java.util.Map;
 
@@ -52,7 +53,7 @@ public class BookingController {
 
     @GetMapping("owner")
     public ResponseEntity<?> getAllBookingsByOwner(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId,
-                                                  @RequestParam(value = "state", required = false, defaultValue = "ALL") String state) {
+                                                   @RequestParam(value = "state", required = false, defaultValue = "ALL") String state) {
         if (state.equals("UNSUPPORTED_STATUS")) {
             return ResponseEntity.badRequest().body(Map.of("error", "Unknown state: UNSUPPORTED_STATUS"));
         }

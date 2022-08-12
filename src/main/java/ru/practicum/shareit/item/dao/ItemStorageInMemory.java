@@ -48,7 +48,7 @@ public class ItemStorageInMemory implements ItemStorage {
         updItem.setId(itemId);
         if (item.getName() != null) updItem.setName(item.getName());
         if (item.getDescription() != null) updItem.setDescription(item.getDescription());
-        if (item.getAvailable() != null)  updItem.setAvailable(item.getAvailable());
+        if (item.getAvailable() != null) updItem.setAvailable(item.getAvailable());
         updItem.setOwner(userStorage.getUser(userId));
 //        updItem.setRequest(); <- заготовка для будущего спринта
 
@@ -71,7 +71,7 @@ public class ItemStorageInMemory implements ItemStorage {
                 .filter(u -> u.getOwner().getId() == userId)
                 .collect(Collectors.toList());
 
-        for(Item x : filteredByUser) {
+        for (Item x : filteredByUser) {
             itemsDtoByUser.add(ItemMapper.toItemDto(x));
         }
 
@@ -91,7 +91,7 @@ public class ItemStorageInMemory implements ItemStorage {
                 .filter(Item::getAvailable)
                 .collect(Collectors.toList());
 
-        for(Item x : filteredByName) {
+        for (Item x : filteredByName) {
             itemsDtoByName.add(ItemMapper.toItemDto(x));
         }
         return itemsDtoByName;
