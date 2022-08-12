@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
  */
 public class ItemRequestDto {
     private String description;
-    private User requestor;
+    private int requestor;
     private LocalDateTime created;
 
-    public ItemRequestDto(String description, User requestor, LocalDateTime created) {
+    public ItemRequestDto(String description, Integer requestor, LocalDateTime created) {
         this.description = description;
         this.requestor = requestor;
         this.created = created;
