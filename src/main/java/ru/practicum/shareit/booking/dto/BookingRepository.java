@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
-    List<Booking> findByBooker_IdOrderByStartDesc(int bookerId);
+    List<Booking> findByBookerIdOrderByStartDesc(int bookerId);
 
     List<Booking> findAllByItemIdInOrderByStartDesc(List<Integer> itemIds);
 }

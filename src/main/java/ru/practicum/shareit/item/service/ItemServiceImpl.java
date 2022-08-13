@@ -102,7 +102,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional
     public List<ItemDto> findItemByName(String text) {
-        if (text.isBlank()) {
+        if (text == null || text.isBlank()) {
             return new ArrayList<>();
         }
 

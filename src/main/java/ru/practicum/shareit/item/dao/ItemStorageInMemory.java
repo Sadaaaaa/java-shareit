@@ -38,7 +38,7 @@ public class ItemStorageInMemory implements ItemStorage {
 
     @Override
     public ItemDto updateItem(int userId, int itemId, Item item) {
-        if ((items.get(itemId).getOwner() != null) && (items.get(itemId).getOwner().getId() != userId)) {
+        if (items.get(itemId).getOwner() != null && items.get(itemId).getOwner().getId() != userId) {
             log.warn("Incorrect owner: Wrong item updated owner");
             throw new NotFoundException("Wrong item updated owner");
         }
