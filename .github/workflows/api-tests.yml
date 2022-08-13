@@ -53,7 +53,7 @@ jobs:
 
       - name: Waiting for application is up
         run: |
-          /tmp/wait-for-it.sh -t 60 localhost:8080
+          /tmp/wait-for-it.sh -t 160 localhost:8080
           echo "Application is up"
 
       - name: Run POSTMAN tests
