@@ -2,13 +2,8 @@ package ru.practicum.shareit;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import ru.practicum.shareit.exception.PageableException;
-
-import javax.persistence.criteria.CriteriaBuilder;
-
-import static org.mockito.ArgumentMatchers.any;
 
 public class OffsetLimitPageableTest {
 
