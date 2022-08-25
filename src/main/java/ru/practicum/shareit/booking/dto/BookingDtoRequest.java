@@ -1,8 +1,6 @@
 package ru.practicum.shareit.booking.dto;
 
 import lombok.*;
-
-import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
 @Getter

@@ -1,14 +1,12 @@
 package ru.practicum.shareit.request.model;
 
 import lombok.*;
-import org.hibernate.Hibernate;
 import ru.practicum.shareit.item.model.Item;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * // TODO .

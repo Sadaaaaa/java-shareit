@@ -9,8 +9,8 @@ import java.util.Optional;
 public class OffsetLimitPageable implements Pageable {
     private final int offset;
     private final int limit;
-    private Sort sort;
-    private static int DEFAULT_PAGE_SIZE = 100;
+    private final Sort sort;
+    private static final int DEFAULT_PAGE_SIZE = 100;
 
     public OffsetLimitPageable(int offset, int limit, Sort sort) {
         this.offset = offset;

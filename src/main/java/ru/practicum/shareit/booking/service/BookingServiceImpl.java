@@ -1,7 +1,6 @@
 package ru.practicum.shareit.booking.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -108,14 +106,11 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingDto> getAllBookingsByOwner(int userId, int from, int size, String state) {
-        if (userRepository.findById(userId).isEmpty()) {
-            throw new NotFoundException("User is not found!");
-        }
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User is not found!"));
 
-        List<Integer> itemsIds = itemRepository.findAllByOwnerId(userId, PageRequest.of(from, size)).stream()
-                .map(Item::getId)
-                .collect(Collectors.toList());
-        List<Booking> bookings = bookingRepository.findAllByItemIdInOrderByStartDesc(itemsIds);
+        Pageable pageable = OffsetLimitPageable.of(from, size, Sort.by(Sort.Direction.DESC, "start"));
+        List<Booking> bookings = bookingRepository.findAllByItemOwner(user, pageable);
+
         return BookingsByState.bookingDtoByState(bookings, state);
     }
 }

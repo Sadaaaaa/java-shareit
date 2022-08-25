@@ -148,8 +148,7 @@ public class BookingServiceTest {
         booking.setStatus(BookingStatus.PAST);
         booking.setEnd(booking.getStart().minusDays(1));
         when(userRepository.findById(anyInt())).thenReturn(Optional.of(owner));
-        when(bookingRepository.findAllByItemIdInOrderByStartDesc(List.of(1))).thenReturn(List.of(booking));
-        when(itemRepository.findAllByOwnerId(anyInt(), any())).thenReturn(List.of(item));
+        when(bookingRepository.findAllByItemOwner(any(), any())).thenReturn(List.of(booking));
 
         assertEquals(bookingService.getAllBookingsByOwner(1, 0, 5, "PAST"), List.of(BookingMapper.toBookingDto(booking)));
     }
