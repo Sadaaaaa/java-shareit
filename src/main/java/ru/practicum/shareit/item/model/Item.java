@@ -1,6 +1,6 @@
 package ru.practicum.shareit.item.model;
 
-import lombok.Data;
+import lombok.*;
 import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
@@ -9,8 +9,13 @@ import javax.validation.constraints.NotNull;
 /**
  * // TODO .
  */
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "Items")
 public class Item {
     @Id
@@ -27,4 +32,7 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "user_id")
     private User owner;
+    @Column(name = "request_id")
+    private Integer requestId;
+
 }

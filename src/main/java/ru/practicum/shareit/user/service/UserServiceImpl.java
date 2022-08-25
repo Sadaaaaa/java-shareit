@@ -30,14 +30,14 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDto updateUser(int userId, User user) {
-        User userToUpdate = userRepository.findById(userId).get();
+        User userToUpdate = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User is not found!"));
         if (user.getName() != null) userToUpdate.setName(user.getName());
-        if (user.getEmail() != null) {
-            userToUpdate.setEmail(user.getEmail());
-        }
+        if (user.getEmail() != null) userToUpdate.setEmail(user.getEmail());
+
+        userRepository.save(userToUpdate);
+
         return UserMapper.toUserDto(userToUpdate);
     }
-
     public UserDto getUser(int userId) {
         User userToDto = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User is not exist"));
         return UserMapper.toUserDto(userToDto);

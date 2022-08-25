@@ -10,8 +10,6 @@ import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemServiceImpl;
 
-import java.util.List;
-
 /**
  * // TODO .
  */
@@ -44,17 +42,36 @@ public class ItemController {
     @GetMapping("/{itemId}")
     public ItemDto getItem(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId,
                            @PathVariable int itemId) {
+
+
         return itemService.getItem(itemId, userId);
     }
 
     @GetMapping
-    public List<ItemDto> getItemsByUser(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId) {
-        return itemService.getItemsByUser(userId);
+    public ResponseEntity<?> getItemsByUser(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId,
+                                        @RequestParam(value = "from", required = false, defaultValue = "0") int from,
+                                        @RequestParam(value = "size", required = false, defaultValue = "5") int size) {
+
+        if (size < 1) {
+            return new ResponseEntity<>("Page size should not be less than 1.", HttpStatus.BAD_REQUEST);
+        } else if (from < 0) {
+            return new ResponseEntity<>("Page from should not be less than 0.", HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok(itemService.getItemsByUser(userId, from, size));
     }
 
     @GetMapping("/search")
-    public List<ItemDto> findItemByName(@RequestParam(value = "text", required = false) String text) {
-        return itemService.findItemByName(text);
+    public ResponseEntity<?> findItemByName(@RequestParam(value = "text", required = false) String text,
+        @RequestParam(value = "from", required = false, defaultValue = "0") int from,
+        @RequestParam(value = "size", required = false, defaultValue = "5") int size) {
+
+            if (size < 1) {
+                return new ResponseEntity<>("Page size should not be less than 1.", HttpStatus.BAD_REQUEST);
+            } else if (from < 0) {
+                return new ResponseEntity<>("Page from should not be less than 0.", HttpStatus.BAD_REQUEST);
+            }
+        return ResponseEntity.ok(itemService.findItemByName(text, from, size));
     }
 
     @PostMapping("/{itemId}/comment")

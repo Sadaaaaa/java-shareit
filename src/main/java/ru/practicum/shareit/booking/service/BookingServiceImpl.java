@@ -1,7 +1,11 @@
 package ru.practicum.shareit.booking.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.OffsetLimitPageable;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingDtoRequest;
 import ru.practicum.shareit.booking.dto.BookingMapper;
@@ -59,15 +63,15 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDto update(int userId, int bookingId, Boolean param) {
+    public BookingDto update(int userId, int bookingId, Boolean isApproved) {
         Booking bookingToUpdate = bookingRepository.findById(bookingId).orElseThrow(() -> new NotFoundException("User is not found!"));
 
-        if ((bookingToUpdate.getItem().getOwner().getId() == userId) && param) {
+        if ((bookingToUpdate.getItem().getOwner().getId() == userId) && isApproved) {
             if (bookingToUpdate.getStatus() == BookingStatus.APPROVED) {
                 throw new BadRequestException("Booking already approved!");
             }
             bookingToUpdate.setStatus(BookingStatus.APPROVED);
-        } else if (bookingToUpdate.getItem().getOwner().getId() == userId && !param) {
+        } else if (bookingToUpdate.getItem().getOwner().getId() == userId && !isApproved) {
             bookingToUpdate.setStatus(BookingStatus.REJECTED);
         } else {
             throw new NotFoundException("Wrong item owner!");
@@ -91,22 +95,24 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getAllBookings(int userId, String state) {
-        if (userRepository.findById(userId).isEmpty()) {
+    public List<BookingDto> getAllBookings(int userId, String state, int from, int size) {
+        if (userRepository.findById(userId) == null || userRepository.findById(userId).isEmpty()) {
             throw new NotFoundException("User is not found!");
         }
 
-        List<Booking> bookings = bookingRepository.findByBookerIdOrderByStartDesc(userId);
+        Pageable pageable = OffsetLimitPageable.of(from, size, Sort.by(Sort.Direction.DESC, "start"));
+
+        List<Booking> bookings = bookingRepository.findAllByBookerId(userId, pageable);
         return BookingsByState.bookingDtoByState(bookings, state);
     }
 
     @Override
-    public List<BookingDto> getAllBookingsByOwner(int userId, String state) {
+    public List<BookingDto> getAllBookingsByOwner(int userId, int from, int size, String state) {
         if (userRepository.findById(userId).isEmpty()) {
             throw new NotFoundException("User is not found!");
         }
 
-        List<Integer> itemsIds = itemRepository.findAllByOwnerId(userId).stream()
+        List<Integer> itemsIds = itemRepository.findAllByOwnerId(userId, PageRequest.of(from, size)).stream()
                 .map(Item::getId)
                 .collect(Collectors.toList());
         List<Booking> bookings = bookingRepository.findAllByItemIdInOrderByStartDesc(itemsIds);

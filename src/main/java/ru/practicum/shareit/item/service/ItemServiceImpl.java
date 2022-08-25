@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.dto.BookingRepository;
@@ -17,6 +18,7 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
+
 import ru.practicum.shareit.user.dao.UserRepository;
 import ru.practicum.shareit.user.model.User;
 
@@ -36,7 +38,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     public ItemServiceImpl(ItemRepository itemRepository, UserRepository userRepository,
-                           BookingRepository bookingRepository, CommentRepository commentRepository, BookingService bookingService) {
+                           BookingRepository bookingRepository, CommentRepository commentRepository,
+                           BookingService bookingService) {
 
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
@@ -46,22 +49,25 @@ public class ItemServiceImpl implements ItemService {
     }
 
     public ItemDto addItem(int userId, Item item) {
-        item.setOwner(userRepository.findById(userId).get());
+        if (userId == 0) throw new BadRequestException("User shouldn't be empty.");
+        item.setOwner(userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User is not found!")));
+
         Item itemToMap = itemRepository.save(item);
         return ItemMapper.toItemDto(itemToMap);
     }
 
     public ItemDto updateItem(int userId, int itemId, Item item) {
+        Item itemToUpdate = itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("Item is not found!"));
+
         if (userId == 0) {
             log.warn("Empty header: X-Sharer-User-Id");
             throw new BadRequestException("Bad item header");
         }
 
-        if (itemRepository.findById(itemId).get().getOwner().getId() != userId) {
+        if (itemToUpdate.getOwner().getId() != userId) {
             throw new NotFoundException("Wrong item owner!");
         }
 
-        Item itemToUpdate = itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("Item is not found!"));
         if (item.getName() != null) itemToUpdate.setName(item.getName());
         if (item.getDescription() != null) itemToUpdate.setDescription(item.getDescription());
         if (item.getAvailable() != null) itemToUpdate.setAvailable(item.getAvailable());
@@ -69,7 +75,6 @@ public class ItemServiceImpl implements ItemService {
         itemRepository.save(itemToUpdate);
         return ItemMapper.toItemDto(itemToUpdate);
     }
-
     @Transactional
     public ItemDto getItem(int itemId, int userId) {
         Item itemToMap = itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("Wrong item ID!"));
@@ -84,46 +89,35 @@ public class ItemServiceImpl implements ItemService {
                 itemDto.setLastBooking(BookingMapper.forItem(bookings.get(1)));
             }
         }
-
         itemDto.setComments(commentRepository.findAllByItem_Id(itemId).stream()
                 .map(ItemMapper::toCommentDto).collect(Collectors.toList()));
-
         return itemDto;
     }
-
-    public List<ItemDto> getItemsByUser(int userId) {
-        List<Item> items = itemRepository.findAllByOwnerId(userId);
+    public List<ItemDto> getItemsByUser(int userId, int from, int size) {
+        List<Item> items = itemRepository.findAllByOwnerId(userId, PageRequest.of(from, size));
         List<ItemDto> itemDtos = items.stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
         return itemDtos.stream()
                 .map((item) -> this.getItem(item.getId(), userId))
                 .sorted(Comparator.comparingInt(ItemDto::getId))
                 .collect(Collectors.toList());
     }
-
-    @Transactional
-    public List<ItemDto> findItemByName(String text) {
+    public List<ItemDto> findItemByName(String text, int from, int size) {
         if (text == null || text.isBlank()) {
             return new ArrayList<>();
         }
-
-        List<Item> items = itemRepository.search(text.toLowerCase());
+        List<Item> items = itemRepository.search(text.toLowerCase(), PageRequest.of(from, size));
 
         return items.stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
     }
 
     @Override
     public CommentDto addComment(int userId, int itemId, Comment comment) {
+        if (comment.getText().isEmpty()) throw new BadRequestException("Comment text is empty.");
 
-        if (comment.getText().isEmpty()) {
-            throw new BadRequestException("Comment text is empty.");
-        }
-
-        List<BookingDto> bookings = bookingService.getAllBookings(userId, "PAST");
+        List<BookingDto> bookings = bookingService.getAllBookings(userId, "PAST", 0, 5);
         List<User> bookers = bookings.stream().map(BookingDto::getBooker).collect(Collectors.toList());
         List<Integer> bookersIds = bookers.stream().map(User::getId).collect(Collectors.toList());
-        if (bookersIds.size() == 0) {
-            throw new BadRequestException("Trying leave comment without booking.");
-        }
+        if (bookersIds.size() == 0) throw new BadRequestException("Trying leave comment without booking.");
 
         comment.setItem(itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("Item is not found!")));
         comment.setAuthor(userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User is not found!")));

@@ -1,5 +1,8 @@
 package ru.practicum.shareit.item.dao;
 
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,11 +14,11 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
 
-    List<Item> findAllByOwnerId(int userId);
+    List<Item> findAllByOwnerId(int userId, Pageable pageable);
 
-    @Query(" select i from Item i " +
+    @Query("select i from Item i " +
             "where lower(i.name) like lower(concat('%', :search, '%')) " +
             " or lower(i.description) like lower(concat('%', :search, '%')) " +
             " and i.available = true")
-    List<Item> search(@Param("search") String text);
+    List<Item> search(@Param("search") String text, Pageable pageable);
 }

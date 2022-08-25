@@ -1,6 +1,6 @@
 package ru.practicum.shareit.booking.model;
 
-import lombok.Data;
+import lombok.*;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
@@ -10,8 +10,13 @@ import java.time.LocalDateTime;
 /**
  * // TODO .
  */
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "Bookings")
 public class Booking {
     @Id
@@ -40,6 +45,4 @@ public class Booking {
         this.status = status;
     }
 
-    public Booking() {
-    }
 }

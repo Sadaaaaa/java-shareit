@@ -17,9 +17,4 @@ public class ErrorHandler {
     public ResponseEntity<?> handle(final BadRequestException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
-
-    @ExceptionHandler
-    public ResponseEntity<?> handle(final ConflictException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-    }
 }
