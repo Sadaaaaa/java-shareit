@@ -87,18 +87,14 @@ public class ItemServiceImpl implements ItemService {
                 itemDto.setLastBooking(BookingMapper.forItem(bookings.get(1)));
             }
         }
-        itemDto.setComments(commentRepository.findAllByItem_Id(itemId).stream()
-                .map(ItemMapper::toCommentDto).collect(Collectors.toList()));
+        itemDto.setComments(commentRepository.findAllByItem_Id(itemId).stream().map(ItemMapper::toCommentDto).collect(Collectors.toList()));
         return itemDto;
     }
 
     public List<ItemDto> getItemsByUser(int userId, int from, int size) {
         List<Item> items = itemRepository.findAllByOwnerId(userId, PageRequest.of(from, size));
         List<ItemDto> itemDtos = items.stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
-        return itemDtos.stream()
-                .map((item) -> this.getItem(item.getId(), userId))
-                .sorted(Comparator.comparingInt(ItemDto::getId))
-                .collect(Collectors.toList());
+        return itemDtos.stream().map((item) -> this.getItem(item.getId(), userId)).sorted(Comparator.comparingInt(ItemDto::getId)).collect(Collectors.toList());
     }
 
     public List<ItemDto> findItemByName(String text, int from, int size) {
