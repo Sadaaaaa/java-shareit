@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
 
         return UserMapper.toUserDto(userToUpdate);
     }
+
     public UserDto getUser(int userId) {
         User userToDto = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User is not exist"));
         return UserMapper.toUserDto(userToDto);
