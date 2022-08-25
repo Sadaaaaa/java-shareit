@@ -55,6 +55,7 @@ public class ItemServiceImpl implements ItemService {
         Item itemToMap = itemRepository.save(item);
         return ItemMapper.toItemDto(itemToMap);
     }
+
     public ItemDto updateItem(int userId, int itemId, Item item) {
         Item itemToUpdate = itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("Item is not found!"));
 
@@ -74,6 +75,7 @@ public class ItemServiceImpl implements ItemService {
         itemRepository.save(itemToUpdate);
         return ItemMapper.toItemDto(itemToUpdate);
     }
+
     @Transactional
     public ItemDto getItem(int itemId, int userId) {
         Item itemToMap = itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("Wrong item ID!"));
@@ -92,6 +94,7 @@ public class ItemServiceImpl implements ItemService {
                 .map(ItemMapper::toCommentDto).collect(Collectors.toList()));
         return itemDto;
     }
+
     public List<ItemDto> getItemsByUser(int userId, int from, int size) {
         List<Item> items = itemRepository.findAllByOwnerId(userId, PageRequest.of(from, size));
         List<ItemDto> itemDtos = items.stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
@@ -100,6 +103,7 @@ public class ItemServiceImpl implements ItemService {
                 .sorted(Comparator.comparingInt(ItemDto::getId))
                 .collect(Collectors.toList());
     }
+
     public List<ItemDto> findItemByName(String text, int from, int size) {
         if (text == null || text.isBlank()) {
             return new ArrayList<>();
@@ -108,7 +112,7 @@ public class ItemServiceImpl implements ItemService {
 
         return items.stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
     }
-    @Override
+
     public CommentDto addComment(int userId, int itemId, Comment comment) {
         if (comment.getText().isEmpty()) throw new BadRequestException("Comment text is empty.");
 
