@@ -26,20 +26,20 @@ public class BookingController {
     @PostMapping
     public BookingDto createBooking(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId,
                                     @RequestBody BookingDtoRequest booking) {
-        return bookingService.create(userId, booking);
+        return bookingService.addNewBooking(userId, booking);
     }
 
     @GetMapping("{bookingId}")
     public BookingDto readBooking(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId,
                                   @PathVariable int bookingId) {
-        return bookingService.read(userId, bookingId);
+        return bookingService.findBookingById(userId, bookingId);
     }
 
     @PatchMapping("{bookingId}")
     public BookingDto updateBooking(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId,
                                     @PathVariable int bookingId,
                                     @RequestParam(value = "approved") Boolean isApproved) {
-        return bookingService.update(userId, bookingId, isApproved);
+        return bookingService.updateBookingById(userId, bookingId, isApproved);
     }
 
     @GetMapping

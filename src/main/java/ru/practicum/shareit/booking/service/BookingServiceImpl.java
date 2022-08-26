@@ -1,6 +1,7 @@
 package ru.practicum.shareit.booking.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDto create(int userId, BookingDtoRequest booking) {
+    public BookingDto addNewBooking(int userId, BookingDtoRequest booking) {
         Item item = itemRepository.findById(booking.getItemId()).orElseThrow(() -> new NotFoundException("Item is not found!"));
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User is not found!"));
 
@@ -61,7 +62,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDto update(int userId, int bookingId, Boolean isApproved) {
+    public BookingDto updateBookingById(int userId, int bookingId, Boolean isApproved) {
         Booking bookingToUpdate = bookingRepository.findById(bookingId).orElseThrow(() -> new NotFoundException("User is not found!"));
 
         if ((bookingToUpdate.getItem().getOwner().getId() == userId) && isApproved) {
@@ -81,7 +82,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDto read(int userId, int bookingId) {
+    public BookingDto findBookingById(int userId, int bookingId) {
 
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new NotFoundException("Wrong booking ID!"));
 

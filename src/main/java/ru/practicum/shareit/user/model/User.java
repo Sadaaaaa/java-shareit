@@ -27,6 +27,6 @@ public class User {
     private String name;
     @NotEmpty(message = "Email shouldn't be empty")
     @Email(message = "Email should be valid")
-    @Column(name = "user_email")
+    @Column(name = "user_email", nullable = false)
     private String email;
 }

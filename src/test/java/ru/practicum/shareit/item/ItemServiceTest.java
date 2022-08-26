@@ -117,7 +117,7 @@ public class ItemServiceTest {
     void whenGetItem_thenReturnItemDto() {
         when(itemRepository.findById(anyInt())).thenReturn(Optional.ofNullable(item));
         when(bookingRepository.findAllByItemIdInOrderByStartDesc(anyList())).thenReturn(List.of(booking));
-        when(commentRepository.findAllByItem_Id(anyInt())).thenReturn(List.of(comment));
+        when(commentRepository.findAllByItemId(anyInt())).thenReturn(List.of(comment));
 
         ItemDto itemDto = ItemMapper.toItemDto(item);
         itemDto.setNextBooking(BookingMapper.forItem(booking));
@@ -130,7 +130,7 @@ public class ItemServiceTest {
 
         verify(itemRepository, Mockito.times(2)).findById(anyInt());
         verify(bookingRepository, Mockito.times(2)).findAllByItemIdInOrderByStartDesc(anyList());
-        verify(commentRepository, Mockito.times(2)).findAllByItem_Id(anyInt());
+        verify(commentRepository, Mockito.times(2)).findAllByItemId(anyInt());
     }
 
     @Test

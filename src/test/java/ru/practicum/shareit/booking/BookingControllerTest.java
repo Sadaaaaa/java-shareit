@@ -91,7 +91,7 @@ public class BookingControllerTest {
 
     @Test
     void create_BookingTest() throws Exception {
-        Mockito.when(bookingService.create(anyInt(), any())).thenReturn(BookingMapper.toBookingDto(booking));
+        Mockito.when(bookingService.addNewBooking(anyInt(), any())).thenReturn(BookingMapper.toBookingDto(booking));
         mockMvc.perform(post("/bookings")
                         .header("X-Sharer-User-Id", owner.getId())
                         .content(mapper.writeValueAsString(booking))
@@ -107,7 +107,7 @@ public class BookingControllerTest {
 
     @Test
     void read_BookingTest() throws Exception {
-        Mockito.when(bookingService.read(anyInt(), anyInt())).thenReturn(BookingMapper.toBookingDto(booking));
+        Mockito.when(bookingService.findBookingById(anyInt(), anyInt())).thenReturn(BookingMapper.toBookingDto(booking));
         mockMvc.perform(get("/bookings/1")
                         .content(mapper.writeValueAsString(bookingDtoRequest))
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -122,7 +122,7 @@ public class BookingControllerTest {
 
     @Test
     void update_BookingTest() throws Exception {
-        Mockito.when(bookingService.update(anyInt(), anyInt(), any())).thenReturn(BookingMapper.toBookingDto(booking));
+        Mockito.when(bookingService.updateBookingById(anyInt(), anyInt(), any())).thenReturn(BookingMapper.toBookingDto(booking));
         mockMvc.perform(patch("/bookings/1")
                         .content(mapper.writeValueAsString(bookingDtoRequest))
                         .param("approved", "true")

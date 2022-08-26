@@ -102,35 +102,35 @@ public class BookingServiceTest {
         bookingDtoRequest.setStart(LocalDateTime.of(2022, 12, 12, 0,0,0,0));
         booking.setStart(LocalDateTime.of(2022, 12, 12, 0,0,0,0));
 
-        assertEquals(bookingService.create(2, bookingDtoRequest), BookingMapper.toBookingDto(booking));
+        assertEquals(bookingService.addNewBooking(2, bookingDtoRequest), BookingMapper.toBookingDto(booking));
         Mockito.verify(itemRepository, Mockito.times(1)).findById(anyInt());
         Mockito.verify(userRepository, Mockito.times(1)).findById(anyInt());
 
-        assertThrows(NotFoundException.class, () -> bookingService.create(1, bookingDtoRequest));
+        assertThrows(NotFoundException.class, () -> bookingService.addNewBooking(1, bookingDtoRequest));
 
         bookingDtoRequest.setStart(LocalDateTime.of(2020, 12, 13, 0,0,0,0));
-        assertThrows(BadRequestException.class, () -> bookingService.create(2, bookingDtoRequest));
+        assertThrows(BadRequestException.class, () -> bookingService.addNewBooking(2, bookingDtoRequest));
     }
 
     @Test
     void updateCreateBooking_thenReturnBookingDto() {
         when(bookingRepository.findById(anyInt())).thenReturn(Optional.ofNullable(booking));
 
-        assertEquals(bookingService.update(1, 1, true), BookingMapper.toBookingDto(booking));
-        assertEquals(bookingService.update(1, 1, false), BookingMapper.toBookingDto(booking));
+        assertEquals(bookingService.updateBookingById(1, 1, true), BookingMapper.toBookingDto(booking));
+        assertEquals(bookingService.updateBookingById(1, 1, false), BookingMapper.toBookingDto(booking));
 
-        assertThrows(NotFoundException.class, () -> bookingService.update(2, 1, true));
+        assertThrows(NotFoundException.class, () -> bookingService.updateBookingById(2, 1, true));
 
         booking.setStatus(BookingStatus.APPROVED);
-        assertThrows(BadRequestException.class, () -> bookingService.update(1, 1, true));
+        assertThrows(BadRequestException.class, () -> bookingService.updateBookingById(1, 1, true));
     }
 
     @Test
     void updateReadBooking_thenReturnBookingDto() {
         when(bookingRepository.findById(anyInt())).thenReturn(Optional.ofNullable(booking));
 
-        assertEquals(bookingService.read(1, 1), BookingMapper.toBookingDto(booking));
-        assertThrows(NotFoundException.class, () -> bookingService.read(2, 2));
+        assertEquals(bookingService.findBookingById(1, 1), BookingMapper.toBookingDto(booking));
+        assertThrows(NotFoundException.class, () -> bookingService.findBookingById(2, 2));
     }
 
     @Test

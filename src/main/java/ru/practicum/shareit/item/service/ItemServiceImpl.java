@@ -87,7 +87,7 @@ public class ItemServiceImpl implements ItemService {
                 itemDto.setLastBooking(BookingMapper.forItem(bookings.get(1)));
             }
         }
-        itemDto.setComments(commentRepository.findAllByItem_Id(itemId).stream().map(ItemMapper::toCommentDto).collect(Collectors.toList()));
+        itemDto.setComments(commentRepository.findAllByItemId(itemId).stream().map(ItemMapper::toCommentDto).collect(Collectors.toList()));
         return itemDto;
     }
 

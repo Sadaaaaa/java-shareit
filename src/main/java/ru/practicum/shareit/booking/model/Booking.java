@@ -32,6 +32,7 @@ public class Booking {
     private Item item;
     @ManyToOne
     @JoinColumn(name = "booker_id", referencedColumnName = "user_id")
+    @ToString.Exclude
     private User booker;
     @Column(name = "bookings_status")
     @Enumerated(EnumType.ORDINAL)

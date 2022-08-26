@@ -11,7 +11,6 @@ public class ItemMapper {
                 item.getDescription(),
                 item.getAvailable(),
                 item.getRequestId()
-//                item.getRequest() != null ? item.getRequest().getId() : 0
         );
     }
 
