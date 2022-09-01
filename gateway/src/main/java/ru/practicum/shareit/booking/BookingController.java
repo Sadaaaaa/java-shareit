@@ -3,6 +3,7 @@ package ru.practicum.shareit.booking;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -13,6 +14,8 @@ import ru.practicum.shareit.booking.dto.BookingState;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(path = "/bookings")
@@ -28,8 +31,11 @@ public class BookingController {
 			@PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
 			@Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
 
-		BookingState state = BookingState.from(stateParam)
-				.orElseThrow(() -> new IllegalArgumentException("Unknown state: " + stateParam));
+		if (stateParam.equals("UNSUPPORTED_STATUS")) {
+			return ResponseEntity.badRequest().body(Map.of("error", "Unknown state: UNSUPPORTED_STATUS"));
+		}
+
+		BookingState state = BookingState.from(stateParam).orElseThrow(() -> new BadRequestException("Unknown state: " + stateParam));
 		log.info("Get booking with state {}, userId={}, from={}, size={}", stateParam, userId, from, size);
 		return bookingClient.getBookings(userId, state, from, size);
 	}
@@ -47,4 +53,33 @@ public class BookingController {
 			@PathVariable Long bookingId) {
 		log.info("Get booking {}, userId={}", bookingId, userId);
 		return bookingClient.getBooking(userId, bookingId);
-	}}
+	}
+
+	@PatchMapping("{bookingId}")
+	public ResponseEntity<?> updateBooking(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId,
+									@PathVariable int bookingId,
+									@RequestParam(value = "approved") Boolean isApproved) {
+		return bookingClient.updateBookingById(userId, bookingId, isApproved);
+	}
+
+	@GetMapping("owner")
+	public ResponseEntity<?> getAllBookingsByOwner(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) Long userId,
+												   @RequestParam(value = "state", required = false, defaultValue = "ALL") String state,
+												   @RequestParam(value = "from", required = false, defaultValue = "0") int from,
+												   @RequestParam(value = "size", required = false, defaultValue = "5") int size) {
+
+		if (size < 1) {
+			return new ResponseEntity<>("Page size should not be less than 1.", HttpStatus.BAD_REQUEST);
+		} else if (from < 0) {
+			return new ResponseEntity<>("Page from should not be less than 0.", HttpStatus.BAD_REQUEST);
+		}
+
+		if (state.equals("UNSUPPORTED_STATUS")) {
+			return ResponseEntity.badRequest().body(Map.of("error", "Unknown state: UNSUPPORTED_STATUS"));
+		}
+
+		return bookingClient.getAllBookingsByOwner(userId, from, size, state);
+	}
+
+
+}

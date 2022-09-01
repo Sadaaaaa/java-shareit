@@ -2,7 +2,6 @@ package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,7 +13,7 @@ import ru.practicum.shareit.item.dto.Item;
  * // TODO .
  */
 @Controller
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 @Validated
 @RequestMapping("/items")
@@ -22,10 +21,6 @@ public class ItemController {
 
     private final ItemClient itemClient;
 
-    @Autowired
-    public ItemController(ItemClient itemClient) {
-        this.itemClient = itemClient;
-    }
 
     @PostMapping
     public ResponseEntity<?> addItem(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId,

@@ -115,7 +115,7 @@ public class ItemServiceImpl implements ItemService {
         if (bookersIds.size() == 0) throw new BadRequestException("Trying leave comment without booking.");
 
         comment.setItem(itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("Item is not found!")));
-        comment.setAuthor(userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User is not found!")));
+        comment.setAuthor(userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User is not found! TEST")));
         comment.setCreated(LocalDateTime.now());
         commentRepository.save(comment);
         return ItemMapper.toCommentDto(comment);
