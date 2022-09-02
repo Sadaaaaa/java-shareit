@@ -2,7 +2,6 @@ package ru.practicum.shareit.request;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,18 +19,18 @@ public class RequestController {
     private final RequestClient requestClient;
 
     @PostMapping
-    public ResponseEntity<?> addRequest(@RequestHeader (value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId,
+    public ResponseEntity<?> addRequest(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId,
                                         @RequestBody Request request) {
         return requestClient.addRequest(userId, request);
     }
 
     @GetMapping
-    public ResponseEntity<?> getRequest(@RequestHeader (value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId) {
+    public ResponseEntity<?> getRequest(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId) {
         return requestClient.getRequest(userId);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllRequests(@RequestHeader (value = "X-Sharer-User-Id", defaultValue = "0", required = false) Long userId,
+    public ResponseEntity<?> getAllRequests(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) Long userId,
                                             @RequestParam(value = "from", required = false, defaultValue = "0") int from,
                                             @RequestParam(value = "size", required = false, defaultValue = "1") int size) {
         if (size < 1) {
@@ -43,7 +42,7 @@ public class RequestController {
     }
 
     @GetMapping("{requestId}")
-    public ResponseEntity<?> getRequestById(@RequestHeader (value = "X-Sharer-User-Id", defaultValue = "0", required = false) Long userId,
+    public ResponseEntity<?> getRequestById(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) Long userId,
                                             @PathVariable(name = "requestId") int requestId) {
         return requestClient.getRequestById(userId, requestId);
     }

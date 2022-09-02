@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.Comment;
 import ru.practicum.shareit.item.dto.Item;
+
 /**
  * // TODO .
  */
@@ -33,14 +34,14 @@ public class ItemController {
 
     @PatchMapping("/{itemId}")
     public ResponseEntity<?> updateItem(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId,
-                              @PathVariable int itemId,
-                              @RequestBody Item item) {
+                                        @PathVariable int itemId,
+                                        @RequestBody Item item) {
         return itemClient.updateItem(userId, itemId, item);
     }
 
     @GetMapping("/{itemId}")
     public ResponseEntity<?> getItem(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId,
-                           @PathVariable int itemId) {
+                                     @PathVariable int itemId) {
         return itemClient.getItem(itemId, userId);
     }
 
@@ -74,8 +75,8 @@ public class ItemController {
 
     @PostMapping("/{itemId}/comment")
     public ResponseEntity<?> addComment(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) Long userId,
-                                 @PathVariable Integer itemId,
-                                 @RequestBody Comment comment) {
+                                        @PathVariable Integer itemId,
+                                        @RequestBody Comment comment) {
         return itemClient.addComment(userId, itemId, comment);
     }
 }

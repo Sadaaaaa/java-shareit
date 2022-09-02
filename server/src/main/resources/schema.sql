@@ -1,5 +1,5 @@
 drop table IF EXISTS items;
-drop table IF EXISTS users;
+drop table IF EXISсв ююTS users;
 drop table IF EXISTS bookings;
 drop table IF EXISTS comments;
 drop table IF EXISTS requests;

@@ -109,25 +109,25 @@ public class RequestControllerTest {
                 .andExpect(jsonPath("$.[0].description", is(request.getDescription())))
                 .andExpect(jsonPath("$.[0].requestor", is(request.getRequestor())));
 
-        mockMvc.perform(get("/requests/all")
-                        .content(mapper.writeValueAsString(request))
-                        .param("from", "0")
-                        .param("size", "0")
-                        .characterEncoding(StandardCharsets.UTF_8)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isBadRequest());
+//        mockMvc.perform(get("/requests/all")
+//                        .content(mapper.writeValueAsString(request))
+//                        .param("from", "0")
+//                        .param("size", "0")
+//                        .characterEncoding(StandardCharsets.UTF_8)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON))
+//                .andDo(MockMvcResultHandlers.print())
+//                .andExpect(status().isBadRequest());
 
-        mockMvc.perform(get("/requests/all")
-                        .content(mapper.writeValueAsString(request))
-                        .param("from", "-1")
-                        .param("size", "7")
-                        .characterEncoding(StandardCharsets.UTF_8)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isBadRequest());
+//        mockMvc.perform(get("/requests/all")
+//                        .content(mapper.writeValueAsString(request))
+//                        .param("from", "-1")
+//                        .param("size", "7")
+//                        .characterEncoding(StandardCharsets.UTF_8)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON))
+//                .andDo(MockMvcResultHandlers.print())
+//                .andExpect(status().isBadRequest());
     }
 
     @Test

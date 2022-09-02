@@ -12,6 +12,7 @@ import ru.practicum.shareit.item.dto.Comment;
 import ru.practicum.shareit.item.dto.Item;
 
 import java.util.Map;
+
 @Service
 public class ItemClient extends BaseClient {
     private static final String API_PREFIX = "/items";
