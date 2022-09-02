@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ItemRepositoryTest {
 
 
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
 
     @Autowired
     public ItemRepositoryTest(ItemRepository itemRepository) {
