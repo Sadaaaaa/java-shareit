@@ -152,39 +152,6 @@ public class BookingControllerTest {
                 .andExpect(jsonPath("$.[0].id", is(booking.getId())))
                 .andExpect(jsonPath("$.[0].start", is(booking.getStart())))
                 .andExpect(jsonPath("$.[0].end", is(booking.getEnd())));
-
-//        mockMvc.perform(get("/bookings")
-//                        .param("state", "ALL")
-//                        .param("from", "0")
-//                        .param("size", "0")
-//                        .content(mapper.writeValueAsString(bookingDtoRequest))
-//                        .characterEncoding(StandardCharsets.UTF_8)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andDo(MockMvcResultHandlers.print())
-//                .andExpect(status().isBadRequest());
-
-//        mockMvc.perform(get("/bookings")
-//                        .param("state", "ALL")
-//                        .param("from", "-1")
-//                        .param("size", "7")
-//                        .content(mapper.writeValueAsString(bookingDtoRequest))
-//                        .characterEncoding(StandardCharsets.UTF_8)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andDo(MockMvcResultHandlers.print())
-//                .andExpect(status().isBadRequest());
-
-//        mockMvc.perform(get("/bookings")
-//                        .param("state", "UNSUPPORTED_STATUS")
-//                        .param("from", "0")
-//                        .param("size", "7")
-//                        .content(mapper.writeValueAsString(bookingDtoRequest))
-//                        .characterEncoding(StandardCharsets.UTF_8)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andDo(MockMvcResultHandlers.print())
-//                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -203,38 +170,5 @@ public class BookingControllerTest {
                 .andExpect(jsonPath("$.[0].id", is(booking.getId())))
                 .andExpect(jsonPath("$.[0].start", is(booking.getStart())))
                 .andExpect(jsonPath("$.[0].end", is(booking.getEnd())));
-
-//        mockMvc.perform(get("/bookings/owner")
-//                        .param("state", "ALL")
-//                        .param("from", "0")
-//                        .param("size", "0")
-//                        .content(mapper.writeValueAsString(bookingDtoRequest))
-//                        .characterEncoding(StandardCharsets.UTF_8)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andDo(MockMvcResultHandlers.print())
-//                .andExpect(status().isBadRequest());
-
-//        mockMvc.perform(get("/bookings/owner")
-//                        .param("state", "ALL")
-//                        .param("from", "-1")
-//                        .param("size", "7")
-//                        .content(mapper.writeValueAsString(bookingDtoRequest))
-//                        .characterEncoding(StandardCharsets.UTF_8)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andDo(MockMvcResultHandlers.print())
-//                .andExpect(status().isBadRequest());
-
-//        mockMvc.perform(get("/bookings/owner")
-//                        .param("state", "UNSUPPORTED_STATUS")
-//                        .param("from", "0")
-//                        .param("size", "7")
-//                        .content(mapper.writeValueAsString(bookingDtoRequest))
-//                        .characterEncoding(StandardCharsets.UTF_8)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andDo(MockMvcResultHandlers.print())
-//                .andExpect(status().isBadRequest());
     }
 }
