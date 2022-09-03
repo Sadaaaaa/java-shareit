@@ -23,7 +23,7 @@ import java.util.Map;
 @Validated
 public class BookingController {
     private final BookingClient bookingClient;
-    private final String STATUS = "UNSUPPORTED_STATUS";
+    private static final String STATUS = "UNSUPPORTED_STATUS";
 
     @GetMapping
     public ResponseEntity<Object> getBookings(@RequestHeader("X-Sharer-User-Id") long userId,
