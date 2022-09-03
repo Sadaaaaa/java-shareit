@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.request.dto.Request;
+import ru.practicum.shareit.request.dto.RequestDto;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,8 +20,8 @@ public class RequestController {
 
     @PostMapping
     public ResponseEntity<?> addRequest(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId,
-                                        @RequestBody Request request) {
-        return requestClient.addRequest(userId, request);
+                                        @RequestBody RequestDto requestDto) {
+        return requestClient.addRequest(userId, requestDto);
     }
 
     @GetMapping

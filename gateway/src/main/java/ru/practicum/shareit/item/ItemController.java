@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.item.dto.Comment;
-import ru.practicum.shareit.item.dto.Item;
+import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.ItemDto;
 
 /**
  * // TODO .
@@ -25,18 +25,18 @@ public class ItemController {
 
     @PostMapping
     public ResponseEntity<?> addItem(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId,
-                                     @RequestBody Item item) {
-        if (item.getAvailable() == null || item.getName().isBlank() || item.getDescription() == null) {
+                                     @RequestBody ItemDto itemDto) {
+        if (itemDto.getAvailable() == null || itemDto.getName().isBlank() || itemDto.getDescription() == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return itemClient.addItem(userId, item);
+        return itemClient.addItem(userId, itemDto);
     }
 
     @PatchMapping("/{itemId}")
     public ResponseEntity<?> updateItem(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) int userId,
                                         @PathVariable int itemId,
-                                        @RequestBody Item item) {
-        return itemClient.updateItem(userId, itemId, item);
+                                        @RequestBody ItemDto itemDto) {
+        return itemClient.updateItem(userId, itemId, itemDto);
     }
 
     @GetMapping("/{itemId}")
@@ -76,7 +76,7 @@ public class ItemController {
     @PostMapping("/{itemId}/comment")
     public ResponseEntity<?> addComment(@RequestHeader(value = "X-Sharer-User-Id", defaultValue = "0", required = false) Long userId,
                                         @PathVariable Integer itemId,
-                                        @RequestBody Comment comment) {
+                                        @RequestBody CommentDto comment) {
         return itemClient.addComment(userId, itemId, comment);
     }
 }

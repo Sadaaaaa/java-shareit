@@ -17,6 +17,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.mockito.ArgumentMatchers.anyInt;
+
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
@@ -35,6 +37,7 @@ public class UserServiceTest {
     @Test
     void whenCreateUser_thenReturnUserDto() {
         Mockito.when(userRepository.save(user)).thenReturn(user);
+        Mockito.when(userRepository.findById(anyInt())).thenReturn(Optional.ofNullable(user));
         Assertions.assertEquals(userServiceImpl.createUser(user), UserMapper.toUserDto(user));
         Mockito.verify(userRepository, Mockito.times(1)).save(user);
     }

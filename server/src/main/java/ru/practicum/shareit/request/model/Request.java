@@ -33,6 +33,5 @@ public class Request {
     @OneToMany
     @JoinColumn(name = "request_id")
     @ToString.Exclude
-//    @Transient
     private List<Item> items = new ArrayList<>();
 }

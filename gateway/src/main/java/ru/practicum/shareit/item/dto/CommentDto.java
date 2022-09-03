@@ -8,14 +8,14 @@ import java.time.LocalDateTime;
 public class CommentDto {
     private int id;
     private String text;
-    private Item item;
+    private ItemDto itemDto;
     private String authorName;
     private LocalDateTime created;
 
-    public CommentDto(int id, String text, Item item, String authorName, LocalDateTime created) {
+    public CommentDto(int id, String text, ItemDto itemDto, String authorName, LocalDateTime created) {
         this.id = id;
         this.text = text;
-        this.item = item;
+        this.itemDto = itemDto;
         this.authorName = authorName;
         this.created = created;
     }

@@ -17,8 +17,9 @@ services:
     container_name: server
     ports:
       - "9090:9090"
+      - "9091:9091"
     depends_on:
-      - db
+      - postgres
     environment:
       - DB_NAME=postgres
       - POSTGRES_USER=postgres
@@ -26,12 +27,10 @@ services:
       - DB_HOST=postgres
       - DB_PORT=5432
 
-  db:
-    image: postgres:13.7-alpine
+  postgres:
+    image: postgres:14.5-alpine
     container_name: postgres
     ports:
-      - "6541:5432"
+      - "5432:5432"
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres

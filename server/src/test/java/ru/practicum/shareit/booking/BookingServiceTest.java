@@ -99,8 +99,8 @@ public class BookingServiceTest {
         when(itemRepository.findById(anyInt())).thenReturn(Optional.ofNullable(item));
         when(userRepository.findById(anyInt())).thenReturn(Optional.of(owner));
 
-        bookingDtoRequest.setStart(LocalDateTime.of(2022, 12, 12, 0,0,0,0));
-        booking.setStart(LocalDateTime.of(2022, 12, 12, 0,0,0,0));
+        bookingDtoRequest.setStart(LocalDateTime.of(2022, 12, 12, 0, 0, 0, 0));
+        booking.setStart(LocalDateTime.of(2022, 12, 12, 0, 0, 0, 0));
 
         assertEquals(bookingService.addNewBooking(2, bookingDtoRequest), BookingMapper.toBookingDto(booking));
         Mockito.verify(itemRepository, Mockito.times(1)).findById(anyInt());
@@ -108,7 +108,7 @@ public class BookingServiceTest {
 
         assertThrows(NotFoundException.class, () -> bookingService.addNewBooking(1, bookingDtoRequest));
 
-        bookingDtoRequest.setStart(LocalDateTime.of(2020, 12, 13, 0,0,0,0));
+        bookingDtoRequest.setStart(LocalDateTime.of(2020, 12, 13, 0, 0, 0, 0));
         assertThrows(BadRequestException.class, () -> bookingService.addNewBooking(2, bookingDtoRequest));
     }
 

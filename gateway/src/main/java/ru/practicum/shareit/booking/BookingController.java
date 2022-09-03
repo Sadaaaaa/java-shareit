@@ -23,6 +23,7 @@ import java.util.Map;
 @Validated
 public class BookingController {
     private final BookingClient bookingClient;
+    private final String STATUS = "UNSUPPORTED_STATUS";
 
     @GetMapping
     public ResponseEntity<Object> getBookings(@RequestHeader("X-Sharer-User-Id") long userId,
@@ -75,8 +76,8 @@ public class BookingController {
             return new ResponseEntity<>("Page from should not be less than 0.", HttpStatus.BAD_REQUEST);
         }
 
-        if (state.equals("UNSUPPORTED_STATUS")) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Unknown state: UNSUPPORTED_STATUS"));
+        if (state.equals(STATUS)) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Unknown state: " + STATUS));
         }
 
         return bookingClient.getAllBookingsByOwner(userId, from, size, state);

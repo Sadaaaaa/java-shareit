@@ -96,6 +96,7 @@ public class ItemServiceTest {
     void whenCreateItem_thenReturnItemDto() {
         when(itemRepository.save(item)).thenReturn(item);
         when(userRepository.findById(anyInt())).thenReturn(Optional.of(new User()));
+        when(itemRepository.findById(anyInt())).thenReturn(Optional.of(item));
         assertEquals(itemServiceImpl.addItem(1, item), ItemMapper.toItemDto(item));
         Mockito.verify(itemRepository, Mockito.times(1)).save(item);
         Mockito.verify(userRepository, Mockito.times(1)).findById(anyInt());

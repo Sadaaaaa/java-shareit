@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
     public UserDto createUser(User user) {
         User userToDto = userRepository.save(user);
-        return UserMapper.toUserDto(userToDto);
+        return UserMapper.toUserDto(userRepository.findById(userToDto.getId()).orElseThrow(() -> new NotFoundException("User was not save correctly!")));
     }
 
     public UserDto updateUser(int userId, User user) {
