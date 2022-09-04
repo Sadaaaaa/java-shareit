@@ -38,7 +38,7 @@ public class UserServiceTest {
     void whenCreateUser_thenReturnUserDto() {
         Mockito.when(userRepository.save(user)).thenReturn(user);
         Mockito.when(userRepository.findById(anyInt())).thenReturn(Optional.ofNullable(user));
-        Assertions.assertEquals(userServiceImpl.createUser(user), UserMapper.toUserDto(user));
+        Assertions.assertEquals(userServiceImpl.createUser(UserMapper.toUserDto(user)), UserMapper.toUserDto(user));
         Mockito.verify(userRepository, Mockito.times(1)).save(user);
     }
 
@@ -52,7 +52,7 @@ public class UserServiceTest {
 
         Mockito.when(userRepository.findById(1)).thenReturn(Optional.ofNullable(user));
         Mockito.when(userRepository.save(user)).thenReturn(user);
-        Assertions.assertEquals(userServiceImpl.updateUser(1, userToUpdate), UserMapper.toUserDto(userToUpdate));
+        Assertions.assertEquals(userServiceImpl.updateUser(1, UserMapper.toUserDto(userToUpdate)), UserMapper.toUserDto(userToUpdate));
         Mockito.verify(userRepository, Mockito.times(1)).findById(1);
     }
 

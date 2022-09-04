@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserServiceImpl;
 
 import javax.validation.Valid;
@@ -21,8 +20,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
-        return ResponseEntity.ok(userService.createUser(user));
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userService.createUser(userDto));
     }
 
     @GetMapping
@@ -36,8 +35,8 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public UserDto updateUser(@PathVariable int userId, @RequestBody User user) {
-        return userService.updateUser(userId, user);
+    public UserDto updateUser(@PathVariable int userId, @RequestBody UserDto userDto) {
+        return userService.updateUser(userId, userDto);
     }
 
     @DeleteMapping("/{userId}")

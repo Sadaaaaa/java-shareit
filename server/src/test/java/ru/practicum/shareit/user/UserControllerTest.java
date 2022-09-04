@@ -59,7 +59,7 @@ public class UserControllerTest {
 
     @Test
     void create_userTest() throws Exception {
-        Mockito.when(userService.createUser(any())).thenReturn(UserMapper.toUserDto(user));
+        Mockito.when(userService.createUser((UserDto) any())).thenReturn(UserMapper.toUserDto(user));
         mockMvc.perform(post("/users")
                         .content(mapper.writeValueAsString(user))
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -103,7 +103,7 @@ public class UserControllerTest {
 
     @Test
     void update_userByIdTest() throws Exception {
-        Mockito.when(userService.updateUser(anyInt(), any())).thenReturn(UserMapper.toUserDto(user));
+        Mockito.when(userService.updateUser(anyInt(), (UserDto) any())).thenReturn(UserMapper.toUserDto(user));
         mockMvc.perform(patch("/users/1")
                         .content(mapper.writeValueAsString(user))
                         .characterEncoding(StandardCharsets.UTF_8)
